@@ -14,6 +14,7 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -44,28 +45,28 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public Step descompressFileStep(JobRepository jobRepo, Tasklet t, PlatformTransactionManager txtManager) {
+    public Step descompressFileStep(JobRepository jobRepo,  PlatformTransactionManager txtManager) {
         return new StepBuilder("descompressFileStep", jobRepo)
                 .tasklet(itemDescompressStep(), txtManager)
                 .build();
     }
 
     @Bean
-    public Step readFileStep (JobRepository jobRepository, Tasklet t, PlatformTransactionManager txt) {
+    public Step readFileStep (JobRepository jobRepository,  PlatformTransactionManager txt) {
         return new StepBuilder("readFileStep", jobRepository)
                 .tasklet(itemReaderStep(), txt)
                 .build();
     }
 
     @Bean
-    public Step processFileStep (JobRepository jobRepository, Tasklet t, PlatformTransactionManager txt) {
+    public Step processFileStep (JobRepository jobRepository,  PlatformTransactionManager txt) {
         return new StepBuilder("processFileStep", jobRepository)
                 .tasklet(itemProcessorStep(), txt)
                 .build();
     }
 
     @Bean
-    public Step writerDataStep ( JobRepository jobRepository, Tasklet t, PlatformTransactionManager txt ) {
+    public Step writerDataStep ( JobRepository jobRepository,  PlatformTransactionManager txt ) {
         return new StepBuilder("writerDataStep", jobRepository)
                 .tasklet(itemWriterstep(), txt)
                 .build();
@@ -73,10 +74,10 @@ public class BatchConfiguration {
 
     @Bean
     public Job readCSVJob (JobRepository jobRepository,
-                           Step descompressFileStep,
-                           Step readPersonStep,
-                           Step processPersonStep,
-                           Step writePersonStep) {
+                           @Qualifier("descompressFileStep") Step descompressFileStep,
+                           @Qualifier("readFileStep") Step readPersonStep,
+                           @Qualifier("processFileStep") Step processPersonStep,
+                           @Qualifier("writerDataStep")Step writePersonStep) {
         return new JobBuilder("readCSVJob", jobRepository)
                 .start(descompressFileStep)
                 .next(readPersonStep)

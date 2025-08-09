@@ -29,7 +29,7 @@ public class ItemDescompressStep implements Tasklet {
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         log.info("-----------> Inicio del paso de DESCOMPRENSION <-----------");
 
-        Resource resource = resourceLoader.getResource("classpath:files/person.zip");
+        Resource resource = resourceLoader.getResource("classpath:files/persons.zip");
         String filePath = resource.getFile().getAbsolutePath(); // ruta absoluta de nuestro archivo
 
         ZipFile zipFile = new ZipFile(filePath);

@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 @Configuration
 public class ApplicationConfig {
 
-    @Bean
+ @Bean
     public DataSource dataSource () {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
@@ -17,5 +17,6 @@ public class ApplicationConfig {
         dataSource.setUsername("root");
         dataSource.setPassword("luise123");
         return dataSource;
-    }
+ }
+
 }
